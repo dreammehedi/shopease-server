@@ -10,6 +10,7 @@ const apiCallLimit = apiLimit({
   message: "Too many requests from this IP, please try again later!",
 });
 const createError = require("http-errors");
+const productRouter = require("./router/productRoute");
 const app = express();
 
 // middleware
@@ -19,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(xssClean());
 app.use(apiCallLimit);
+
+// my router middleware
+app.use("/api", productRouter);
 
 // home route
 app.get("/", (req, res) => {
