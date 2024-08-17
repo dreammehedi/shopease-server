@@ -4,13 +4,21 @@ const AllProducts = require("../model/productModel");
 // get all products
 const getAllProducts = async (req, res, next) => {
   try {
+    const searchProduct = req.query.searchProduct || "";
+
     const currentPage = Number(req.query.currentPage) || 1;
     const limit = 6;
+
+    // filter data
+    const filter = {
+      productName: { $regex: searchProduct, $options: "i" },
+    };
+
     // get all products
-    const allProducts = await AllProducts.find()
+    const allProducts = await AllProducts.find(filter)
       .skip((currentPage - 1) * limit)
       .limit(limit);
-
+    // console.log(allProducts, "all product");
     // get all products count
     const allProductsCount = await AllProducts.estimatedDocumentCount();
 
