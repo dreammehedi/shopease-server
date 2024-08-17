@@ -14,7 +14,15 @@ const productRouter = require("./router/productRoute");
 const app = express();
 
 // middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5000",
+      "shopeasy-e-commerce.web.app",
+      "shopeasy-e-commerce.firebaseapp.com",
+    ],
+  })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
