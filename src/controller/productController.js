@@ -4,18 +4,51 @@ const AllProducts = require("../model/productModel");
 // get all products
 const getAllProducts = async (req, res, next) => {
   try {
+    // brand name
+    const findBrand = req.query.brandName || "";
+
+    // category name
+    const findCategory = req.query.categoryName || "";
+
+    // price range
+    const findPriceRange = req.query.priceRange
+      ? JSON.parse(req.query.priceRange)
+      : [0, 5000];
+
+    // sorted by
+    const sortedBy = req.query.sortedBy || "";
+    console.log(sortedBy, "find sortedBy");
+
+    // search products
     const searchProduct = req.query.searchProduct || "";
 
+    // current page
     const currentPage = Number(req.query.currentPage) || 1;
+
+    // limit of products per page
     const limit = 6;
 
     // filter data
     const filter = {
       productName: { $regex: searchProduct, $options: "i" },
+      brandName: { $regex: findBrand, $options: "i" },
+      categoryName: { $regex: findCategory, $options: "i" },
+      price: { $gte: findPriceRange[0], $lte: findPriceRange[1] },
     };
+
+    // sorted products
+    let sortedCriteria = {};
+    if (sortedBy === "priceAsc") {
+      sortedCriteria = { price: 1 };
+    } else if (sortedBy === "priceDesc") {
+      sortedCriteria = { price: -1 };
+    } else if (sortedBy === "dateAdded") {
+      sortedCriteria = { createdAt: -1 };
+    }
 
     // get all products
     const allProducts = await AllProducts.find(filter)
+      .sort(sortedCriteria)
       .skip((currentPage - 1) * limit)
       .limit(limit);
     // console.log(allProducts, "all product");
