@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const xssClean = require("xss-clean");
 const apiLimit = require("express-rate-limit");
 const apiCallLimit = apiLimit({
-  windowMs: 15 * 60 * 1000, // 10 minutes
+  windowMs: 30 * 60 * 1000, // 30 minutes
   max: 50,
   message: "Too many requests from this IP, please try again later!",
 });

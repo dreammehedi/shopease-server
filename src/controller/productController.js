@@ -25,9 +25,6 @@ const getAllProducts = async (req, res, next) => {
     // current page
     const currentPage = Number(req.query.currentPage) || 1;
 
-    // limit of products per page
-    const limit = 6;
-
     // filter data
     const filter = {
       productName: { $regex: searchProduct, $options: "i" },
@@ -49,8 +46,8 @@ const getAllProducts = async (req, res, next) => {
     // get all products
     const allProducts = await AllProducts.find(filter)
       .sort(sortedCriteria)
-      .skip((currentPage - 1) * limit)
-      .limit(limit);
+      .skip((currentPage - 1) * 6)
+      .limit(6);
     // console.log(allProducts, "all product");
     // get all products count
     const allProductsCount = await AllProducts.estimatedDocumentCount();
