@@ -17,6 +17,16 @@ const getAllProducts = async (req, res, next) => {
     // get all products data
     const allProductsData = await AllProducts.find();
 
+    // maximum price for project
+    const maxPrice = await AllProducts.aggregate([
+      {
+        $group: {
+          _id: null,
+          maxPrice: { $max: "$price" },
+        },
+      },
+    ]);
+
     // get brand names of all products
     const uniqueBrandNames = getAllProductsBrandCategoryNames(
       allProductsData,
@@ -35,6 +45,7 @@ const getAllProducts = async (req, res, next) => {
       message: "All Products retrieved successfully.",
       totalProductsCount: allProductsCount,
       currentProductShowingCount: allProducts.length,
+      allProductsMaxPrice: maxPrice[0].maxPrice,
       uniqueBrandNames: uniqueBrandNames,
       uniqueCategory: uniqueCategory,
       payload: allProducts,
