@@ -6,7 +6,7 @@ const xssClean = require("xss-clean");
 const apiLimit = require("express-rate-limit");
 const apiCallLimit = apiLimit({
   windowMs: 30 * 60 * 1000, // 30 minutes
-  max: 50,
+  max: 100,
   message: "Too many requests from this IP, please try again later!",
 });
 const createError = require("http-errors");

@@ -17,7 +17,6 @@ const getAllProducts = async (req, res, next) => {
 
     // sorted by
     const sortedBy = req.query.sortedBy || "";
-    console.log(sortedBy, "find sortedBy");
 
     // search products
     const searchProduct = req.query.searchProduct || "";
